@@ -8,7 +8,7 @@ const sportmonksClient = new SportmonksClient(process.env.SPORTMONKS_API_TOKEN!)
 export const sportmonksTools = {
   get_fixtures: tool({
     description: 'Get football fixtures/matches by date, team, or league. Use this to find upcoming or past matches.',
-    parameters: z.object({
+    inputSchema: z.object({
       date: z.string().optional().describe('Date in YYYY-MM-DD format'),
       teamId: z.number().optional().describe('Team ID to filter fixtures'),
       leagueId: z.number().optional().describe('League ID to filter fixtures'),
@@ -39,7 +39,7 @@ export const sportmonksTools = {
 
   get_today_matches: tool({
     description: 'Get all football matches happening today with odds and predictions',
-    parameters: z.object({}),
+    inputSchema: z.object({}),
     execute: async () => {
       try {
         const result = await sportmonksClient.getTodayFixtures();
@@ -59,7 +59,7 @@ export const sportmonksTools = {
 
   get_live_matches: tool({
     description: 'Get all currently live football matches with real-time scores and events',
-    parameters: z.object({}),
+    inputSchema: z.object({}),
     execute: async () => {
       try {
         const result = await sportmonksClient.getLiveMatches();
@@ -79,7 +79,7 @@ export const sportmonksTools = {
 
   get_standings: tool({
     description: 'Get league standings/table for a specific season',
-    parameters: z.object({
+    inputSchema: z.object({
       seasonId: z.number().describe('Season ID for standings'),
     }),
     execute: async ({ seasonId }) => {
@@ -105,7 +105,7 @@ export const sportmonksTools = {
 
   get_head_to_head: tool({
     description: 'Get head-to-head record and historical matches between two teams',
-    parameters: z.object({
+    inputSchema: z.object({
       team1Id: z.number().describe('First team ID'),
       team2Id: z.number().describe('Second team ID'),
     }),
@@ -134,7 +134,7 @@ export const sportmonksTools = {
 
   get_team_stats: tool({
     description: 'Get comprehensive team statistics, form, and information',
-    parameters: z.object({
+    inputSchema: z.object({
       teamId: z.number().describe('Team ID'),
       includeForm: z.boolean().optional().default(true).describe('Include recent match results'),
     }),
@@ -172,7 +172,7 @@ export const sportmonksTools = {
 
   get_match_predictions: tool({
     description: 'Get AI-powered match predictions and probabilities for a specific fixture',
-    parameters: z.object({
+    inputSchema: z.object({
       matchId: z.number().describe('Match/Fixture ID'),
     }),
     execute: async ({ matchId }) => {
@@ -194,7 +194,7 @@ export const sportmonksTools = {
 
   get_match_odds: tool({
     description: 'Get betting odds from multiple bookmakers for a specific match',
-    parameters: z.object({
+    inputSchema: z.object({
       matchId: z.number().describe('Match/Fixture ID'),
     }),
     execute: async ({ matchId }) => {
@@ -216,7 +216,7 @@ export const sportmonksTools = {
 
   search_team: tool({
     description: 'Search for a team by name to get its ID',
-    parameters: z.object({
+    inputSchema: z.object({
       teamName: z.string().describe('Team name to search for'),
     }),
     execute: async ({ teamName }) => {
@@ -243,7 +243,7 @@ export const sportmonksTools = {
 
   get_league_info: tool({
     description: 'Get information about a specific league including current season',
-    parameters: z.object({
+    inputSchema: z.object({
       leagueId: z.number().describe('League ID'),
     }),
     execute: async ({ leagueId }) => {
