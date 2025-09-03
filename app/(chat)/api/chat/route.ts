@@ -152,8 +152,17 @@ export async function POST(request: Request) {
 
     const stream = createUIMessageStream({
       execute: ({ writer: dataStream }) => {
+        let model;
+        try {
+          model = myProvider.languageModel(selectedChatModel);
+        } catch (error) {
+          console.error('Model not found:', selectedChatModel, error);
+          // Fallback to default model
+          model = myProvider.languageModel('gpt-5');
+        }
+
         const result = streamText({
-          model: myProvider.languageModel(selectedChatModel),
+          model,
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
