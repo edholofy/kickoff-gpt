@@ -64,12 +64,19 @@ export function getStreamContext() {
 }
 
 export async function POST(request: Request) {
+  console.log('🚀 Chat POST endpoint called');
   let requestBody: PostRequestBody;
 
   try {
     const json = await request.json();
+    console.log('📝 Request body received:', { 
+      keys: Object.keys(json), 
+      selectedChatModel: json.selectedChatModel 
+    });
     requestBody = postRequestBodySchema.parse(json);
-  } catch (_) {
+    console.log('✅ Request body validation passed');
+  } catch (error) {
+    console.error('❌ Request body validation failed:', error);
     return new ChatSDKError('bad_request:api').toResponse();
   }
 
@@ -87,12 +94,15 @@ export async function POST(request: Request) {
     } = requestBody;
 
     const session = await auth();
+    console.log('👤 Session check:', { hasSession: !!session, hasUser: !!session?.user });
 
     if (!session?.user) {
+      console.error('❌ No session or user found');
       return new ChatSDKError('unauthorized:chat').toResponse();
     }
 
     const userType: UserType = session.user.type;
+    console.log('✅ User authenticated:', { userId: session.user.id, userType });
 
     const messageCount = await getMessageCountByUserId({
       id: session.user.id,
@@ -153,12 +163,20 @@ export async function POST(request: Request) {
     const stream = createUIMessageStream({
       execute: ({ writer: dataStream }) => {
         let model;
+        console.log('🤖 Loading model:', selectedChatModel);
         try {
           model = myProvider.languageModel(selectedChatModel);
+          console.log('✅ Model loaded successfully:', selectedChatModel);
         } catch (error) {
-          console.error('Model not found:', selectedChatModel, error);
-          // Fallback to default model
-          model = myProvider.languageModel('gpt-5');
+          console.error('❌ Model loading failed:', selectedChatModel, error);
+          try {
+            console.log('🔄 Trying fallback to gpt-5...');
+            model = myProvider.languageModel('gpt-5');
+            console.log('✅ Fallback model loaded');
+          } catch (fallbackError) {
+            console.error('❌ Fallback model also failed:', fallbackError);
+            throw new Error(`Could not load model ${selectedChatModel} or fallback model`);
+          }
         }
 
         const result = streamText({
