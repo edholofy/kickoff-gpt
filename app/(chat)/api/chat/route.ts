@@ -23,6 +23,7 @@ import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
+import { sportmonksTools } from '@/lib/sportmonks/tools';
 import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
@@ -153,7 +154,7 @@ export async function POST(request: Request) {
       execute: ({ writer: dataStream }) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel, requestHints }),
+          system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
           experimental_activeTools:
@@ -164,6 +165,16 @@ export async function POST(request: Request) {
                   'createDocument',
                   'updateDocument',
                   'requestSuggestions',
+                  'get_fixtures',
+                  'get_today_matches',
+                  'get_live_matches',
+                  'get_standings',
+                  'get_head_to_head',
+                  'get_team_stats',
+                  'get_match_predictions',
+                  'get_match_odds',
+                  'search_team',
+                  'get_league_info',
                 ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
@@ -174,6 +185,7 @@ export async function POST(request: Request) {
               session,
               dataStream,
             }),
+            ...sportmonksTools,
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,

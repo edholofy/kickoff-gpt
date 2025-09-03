@@ -22,6 +22,7 @@ import { useAutoResume } from '@/hooks/use-auto-resume';
 import { ChatSDKError } from '@/lib/errors';
 import type { Attachment, ChatMessage } from '@/lib/types';
 import { useDataStream } from './data-stream-provider';
+import { FootballQuickActions } from './football-quick-actions';
 
 export function Chat({
   id,
@@ -146,6 +147,14 @@ export function Chat({
           isReadonly={isReadonly}
           isArtifactVisible={isArtifactVisible}
         />
+
+        {messages.length === 0 && !isReadonly && (
+          <FootballQuickActions
+            chatId={id}
+            sendMessage={sendMessage}
+            selectedVisibilityType={visibilityType}
+          />
+        )}
 
         <div className="sticky bottom-0 flex gap-2 px-4 pb-4 mx-auto w-full bg-background md:pb-6 md:max-w-3xl z-[1] border-t-0">
           {!isReadonly && (
