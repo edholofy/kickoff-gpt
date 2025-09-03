@@ -2,8 +2,14 @@ import { tool } from 'ai';
 import { z } from 'zod';
 import { SportmonksClient } from '@/lib/sportmonks/client';
 
-// Initialize SportMonks client
-const sportmonksClient = new SportmonksClient(process.env.SPORTMONKS_API_TOKEN!);
+// Helper to get SportMonks client with runtime token
+const getSportmonksClient = () => {
+  const token = process.env.SPORTMONKS_API_TOKEN;
+  if (!token) {
+    throw new Error('SPORTMONKS_API_TOKEN is not configured');
+  }
+  return new SportmonksClient(token);
+};
 
 export const sportmonksTools = {
   get_fixtures: tool({
@@ -16,6 +22,8 @@ export const sportmonksTools = {
     }),
     execute: async ({ date, teamId, leagueId, live }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: live ? 'livescores' : 'fixtures',
           date,
@@ -42,6 +50,8 @@ export const sportmonksTools = {
     inputSchema: z.object({}),
     execute: async () => {
       try {
+        const sportmonksClient = getSportmonksClient();
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.getTodayFixtures();
         return {
           success: true,
@@ -62,6 +72,7 @@ export const sportmonksTools = {
     inputSchema: z.object({}),
     execute: async () => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.getLiveMatches();
         return {
           success: true,
@@ -84,6 +95,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ seasonId }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: 'standings',
           seasonId,
@@ -111,6 +123,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ team1Id, team2Id }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: 'head_to_head',
           team1Id,
@@ -140,6 +153,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ teamId, includeForm }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         // Get team info and statistics
         const teamResult = await sportmonksClient.fetch({
           endpoint: 'teams',
@@ -177,6 +191,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ matchId }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.getMatchPredictions(matchId);
         return {
           success: true,
@@ -199,6 +214,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ matchId }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.getMatchOdds(matchId);
         return {
           success: true,
@@ -223,6 +239,7 @@ export const sportmonksTools = {
       try {
         // Note: SportMonks requires specific endpoints for search
         // This is a simplified version - you may need to adjust based on API capabilities
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: 'teams/search/' + encodeURIComponent(teamName),
           include: ['country', 'venue']
@@ -248,6 +265,7 @@ export const sportmonksTools = {
     }),
     execute: async ({ leagueId }) => {
       try {
+        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: 'leagues',
           leagueId,

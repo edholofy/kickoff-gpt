@@ -26,8 +26,7 @@ export class SportmonksClient {
     const url = this.buildUrl(config);
     const response = await fetch(url.toString(), {
       headers: { 
-        'Accept': 'application/json',
-        'Authorization': `${this.token}`
+        'Accept': 'application/json'
       },
       next: { revalidate: this.getCacheDuration(config.endpoint) },
     });
