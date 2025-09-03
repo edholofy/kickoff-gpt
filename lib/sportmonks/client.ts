@@ -24,6 +24,8 @@ export class SportmonksClient {
 
   async fetch(config: SportmonksConfig) {
     const url = this.buildUrl(config);
+    console.log('Fetching SportMonks API:', url.toString().replace(this.token, 'HIDDEN'));
+    
     const response = await fetch(url.toString(), {
       headers: { 
         'Accept': 'application/json'
@@ -33,9 +35,23 @@ export class SportmonksClient {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`SportMonks API error: ${response.status}`, errorText);
+      
+      // Parse common error messages
+      if (response.status === 401) {
+        throw new Error('Invalid SportMonks API token. Please check your SPORTMONKS_API_TOKEN.');
+      } else if (response.status === 403) {
+        throw new Error('SportMonks API access denied. Your API plan may not include this endpoint.');
+      } else if (response.status === 429) {
+        throw new Error('SportMonks API rate limit exceeded. Please try again later.');
+      }
+      
       throw new Error(`SportMonks API error: ${response.status} - ${errorText}`);
     }
-    return response.json();
+    
+    const data = await response.json();
+    console.log('SportMonks API response received');
+    return data;
   }
 
   private buildUrl(config: SportmonksConfig): URL {

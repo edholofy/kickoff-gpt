@@ -6,8 +6,10 @@ import { SportmonksClient } from '@/lib/sportmonks/client';
 const getSportmonksClient = () => {
   const token = process.env.SPORTMONKS_API_TOKEN;
   if (!token) {
-    throw new Error('SPORTMONKS_API_TOKEN is not configured');
+    console.error('SPORTMONKS_API_TOKEN is not configured in environment variables');
+    throw new Error('SPORTMONKS_API_TOKEN is not configured. Please add it to your environment variables.');
   }
+  console.log('SportMonks API token found, length:', token.length);
   return new SportmonksClient(token);
 };
 
