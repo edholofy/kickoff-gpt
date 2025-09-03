@@ -15,8 +15,9 @@ import {
 import { isTestEnvironment } from '../constants';
 
 // Provider configuration based on available API keys
-const useDirectXAI = process.env.XAI_API_KEY && !process.env.VERCEL;
-const useOpenAI = process.env.OPENAI_API_KEY;
+const useDirectXAI = !!process.env.XAI_API_KEY;
+const useOpenAI = !!process.env.OPENAI_API_KEY;
+const useGateway = process.env.VERCEL || (!useDirectXAI && !useOpenAI);
 
 export const myProvider = isTestEnvironment
   ? customProvider({
@@ -25,44 +26,25 @@ export const myProvider = isTestEnvironment
         'chat-model-reasoning': reasoningModel,
         'title-model': titleModel,
         'artifact-model': artifactModel,
-        // Grok-4 models
-        'grok-4': chatModel,
-        'grok-4-reasoning': reasoningModel,
-        // GPT-5 models
         'gpt-5': chatModel,
-        'gpt-5-reasoning': reasoningModel,
+        'grok-4': chatModel,
       },
     })
   : customProvider({
       languageModels: {
-        // Default models (GPT-5 if available, fallback to Grok-4)
-        'chat-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4')),
+        // Default models for backward compatibility
+        'chat-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-vision-1212')),
         'chat-model-reasoning': wrapLanguageModel({
-          model: useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4')),
+          model: useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-beta')),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4')),
-        'artifact-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4')),
+        'title-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
+        'artifact-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
         
-        // Grok-4 specific models
-        'grok-4': useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4'),
-        'grok-4-reasoning': wrapLanguageModel({
-          model: useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-4'),
-          middleware: extractReasoningMiddleware({ tagName: 'think' }),
-        }),
+        // GPT-5 - The latest and greatest
+        'gpt-5': useOpenAI ? openai('gpt-5') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : openai('gpt-4-turbo-preview')),
         
-        // GPT-5 models (NOW LIVE!)
-        'gpt-5': useOpenAI ? openai('gpt-5') : gateway.languageModel('openai/gpt-5'),
-        'gpt-5-reasoning': wrapLanguageModel({
-          model: useOpenAI ? openai('gpt-5') : gateway.languageModel('openai/gpt-5'),
-          middleware: extractReasoningMiddleware({ tagName: 'think' }),
-        }),
-        
-        // GPT-4 models (current stable)
-        'gpt-4-turbo': useOpenAI ? openai('gpt-4-turbo-preview') : gateway.languageModel('openai/gpt-4-turbo-preview'),
-        'gpt-4-turbo-reasoning': wrapLanguageModel({
-          model: useOpenAI ? openai('gpt-4-turbo-preview') : gateway.languageModel('openai/gpt-4-turbo-preview'),
-          middleware: extractReasoningMiddleware({ tagName: 'think' }),
-        }),
+        // Grok-4 - Powerful alternative
+        'grok-4': useDirectXAI ? xai('grok-4') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : xai('grok-2-vision-1212')),
       },
     });
