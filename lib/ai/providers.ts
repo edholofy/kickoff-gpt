@@ -4,6 +4,7 @@ import {
   wrapLanguageModel,
 } from 'ai';
 import { gateway } from '@ai-sdk/gateway';
+import { xai } from '@ai-sdk/xai';
 import {
   artifactModel,
   chatModel,
@@ -11,6 +12,9 @@ import {
   titleModel,
 } from './models.test';
 import { isTestEnvironment } from '../constants';
+
+// Use direct xAI if API key is available, otherwise use gateway
+const useDirectXAI = process.env.XAI_API_KEY && !process.env.VERCEL;
 
 export const myProvider = isTestEnvironment
   ? customProvider({
@@ -21,14 +25,26 @@ export const myProvider = isTestEnvironment
         'artifact-model': artifactModel,
       },
     })
-  : customProvider({
+  : useDirectXAI
+  ? customProvider({
       languageModels: {
-        'chat-model': gateway.languageModel('xai/grok-2-vision-1212'),
+        'chat-model': xai('grok-4'),
         'chat-model-reasoning': wrapLanguageModel({
-          model: gateway.languageModel('xai/grok-3-mini-beta'),
+          model: xai('grok-4'),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': gateway.languageModel('xai/grok-2-1212'),
-        'artifact-model': gateway.languageModel('xai/grok-2-1212'),
+        'title-model': xai('grok-4'),
+        'artifact-model': xai('grok-4'),
+      },
+    })
+  : customProvider({
+      languageModels: {
+        'chat-model': gateway.languageModel('xai/grok-4'),
+        'chat-model-reasoning': wrapLanguageModel({
+          model: gateway.languageModel('xai/grok-4'),
+          middleware: extractReasoningMiddleware({ tagName: 'think' }),
+        }),
+        'title-model': gateway.languageModel('xai/grok-4'),
+        'artifact-model': gateway.languageModel('xai/grok-4'),
       },
     });

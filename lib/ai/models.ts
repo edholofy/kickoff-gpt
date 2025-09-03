@@ -9,12 +9,12 @@ export interface ChatModel {
 export const chatModels: Array<ChatModel> = [
   {
     id: 'chat-model',
-    name: 'Grok Vision',
-    description: 'Advanced multimodal model with vision and text capabilities',
+    name: 'Grok-4',
+    description: 'Latest Grok-4 model with advanced capabilities for sports analysis',
   },
   {
     id: 'chat-model-reasoning',
-    name: 'Grok Reasoning',
-    description: 'Uses advanced chain-of-thought reasoning for complex problems',
+    name: 'Grok-4 Reasoning',
+    description: 'Grok-4 with advanced reasoning for complex betting analysis',
   },
 ];
