@@ -23,7 +23,6 @@ export const sportmonksTools = {
     execute: async ({ date, teamId, leagueId, live }) => {
       try {
         const sportmonksClient = getSportmonksClient();
-        const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
           endpoint: live ? 'livescores' : 'fixtures',
           date,
@@ -50,7 +49,6 @@ export const sportmonksTools = {
     inputSchema: z.object({}),
     execute: async () => {
       try {
-        const sportmonksClient = getSportmonksClient();
         const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.getTodayFixtures();
         return {
