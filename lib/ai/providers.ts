@@ -41,10 +41,10 @@ export const myProvider = isTestEnvironment
         'title-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
         'artifact-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
         
-        // GPT-5 - The latest and greatest
-        'gpt-5': useOpenAI ? openai('gpt-5') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : openai('gpt-4-turbo-preview')),
+        // GPT-5 - Using GPT-4o as fallback until GPT-5 is available
+        'gpt-5': useOpenAI ? openai('gpt-4o') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : openai('gpt-4o')),
         
-        // Grok-4 - Powerful alternative
-        'grok-4': useDirectXAI ? xai('grok-4') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : xai('grok-2-vision-1212')),
+        // Grok-4 - Using Grok-2 as fallback until Grok-4 is available
+        'grok-4': useDirectXAI ? xai('grok-2-vision-1212') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : xai('grok-2-vision-1212')),
       },
     });

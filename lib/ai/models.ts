@@ -10,11 +10,11 @@ export const chatModels: Array<ChatModel> = [
   {
     id: 'gpt-5',
     name: 'GPT-5 🔥',
-    description: 'Latest GPT-5 with superior sports analytics and betting insights',
+    description: 'GPT-4o with superior sports analytics and betting insights (GPT-5 coming soon)',
   },
   {
     id: 'grok-4',
     name: 'Grok-4 ⚡',
-    description: 'Latest Grok-4 model with advanced capabilities for sports analysis',
+    description: 'Grok-2 with advanced capabilities for sports analysis (Grok-4 coming soon)',
   },
 ];
