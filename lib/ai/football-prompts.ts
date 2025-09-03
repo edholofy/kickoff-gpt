@@ -57,7 +57,7 @@ export const QUICK_ACTION_PROMPTS = {
   liveScores: "Show me all live football matches with current scores and in-play betting opportunities.",
   premierLeague: "Give me the current Premier League standings and analyze the top teams' upcoming fixtures.",
   championsLeague: "Show Champions League fixtures and provide betting analysis for the upcoming matches.",
-  valueB bets: "Find today's best value bets across all major football leagues.",
+  valueBets: "Find today's best value bets across all major football leagues.",
   teamComparison: "I want to compare two teams - please ask me which teams and then provide detailed H2H analysis.",
   weekendFixtures: "Show me this weekend's major football fixtures with betting recommendations.",
   underdog: "Identify potential underdog wins for today's matches with good odds value."
