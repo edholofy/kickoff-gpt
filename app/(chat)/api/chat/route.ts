@@ -138,12 +138,18 @@ export async function POST(request: Request) {
 
     // Debug logging for context issues
     const totalContentLength = getTotalContentLength(uiMessages);
+    const systemPromptText = systemPrompt({ selectedChatModel, requestHints, mode: 'football' });
+    const systemPromptLength = systemPromptText.length;
+
     console.log(`📊 Messages debug:`, {
       totalFromDb: messagesFromDb.length,
       totalWithNew: allMessages.length,
       afterTruncation: uiMessages.length,
       totalContentLength,
       contentLengthKB: Math.round(totalContentLength / 1024),
+      systemPromptLength,
+      systemPromptKB: Math.round(systemPromptLength / 1024),
+      totalContextKB: Math.round((totalContentLength + systemPromptLength) / 1024),
       messageSizes: uiMessages.map(m => ({
         role: m.role,
         partsCount: m.parts?.length || 0,
@@ -200,10 +206,10 @@ export async function POST(request: Request) {
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
-          // GPT-5 specific configuration for optimal performance
+          // GPT-5 specific configuration with high reasoning for superior analysis
           ...(selectedChatModel === 'gpt-5' && {
-            reasoning_effort: 'high',
-            verbosity: 'medium'
+            reasoning_effort: 'high',  // Enable high reasoning for complex football analysis
+            verbosity: 'medium'        // Medium verbosity for detailed insights
           }),
           experimental_activeTools: [
             'getWeather',
