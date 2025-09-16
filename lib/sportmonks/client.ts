@@ -53,8 +53,12 @@ export class SportmonksClient {
     const dataSize = JSON.stringify(data).length;
     console.log(`SportMonks API response received - Size: ${Math.round(dataSize / 1024)}KB`);
 
-    // Log the actual response for debugging
-    console.log(`📋 SportMonks API Response:`, JSON.stringify(data, null, 2));
+    // Log summary instead of full response to avoid log overflow
+    console.log(`📋 SportMonks API Response Summary:`, {
+      dataCount: data.data?.length || 0,
+      hasData: !!data.data,
+      firstItem: data.data?.[0]?.name || data.data?.[0]?.id || 'N/A'
+    });
 
     // Warn if response is very large
     if (dataSize > 50000) {

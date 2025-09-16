@@ -39,7 +39,7 @@ import type { ChatMessage } from '@/lib/types';
 import type { ChatModel } from '@/lib/ai/models';
 import type { VisibilityType } from '@/components/visibility-selector';
 
-export const maxDuration = 300; // 5 minutes for GPT-5 high reasoning
+export const maxDuration = 600; // 10 minutes for GPT-5 reasoning with large datasets
 
 let globalStreamContext: ResumableStreamContext | null = null;
 
@@ -104,16 +104,34 @@ export async function POST(request: Request) {
     const userType: UserType = session.user.type;
     console.log('✅ User authenticated:', { userId: session.user.id, userType });
 
-    const messageCount = await getMessageCountByUserId({
-      id: session.user.id,
-      differenceInHours: 24,
-    });
+    console.log('📊 Checking message count for rate limiting...');
+    let messageCount = 0;
+    try {
+      messageCount = await getMessageCountByUserId({
+        id: session.user.id,
+        differenceInHours: 24,
+      });
+      console.log('✅ Message count retrieved:', messageCount);
+    } catch (error) {
+      console.error('❌ Error getting message count:', error);
+      // Continue with 0 count for now to avoid blocking
+      messageCount = 0;
+    }
 
     if (messageCount > entitlementsByUserType[userType].maxMessagesPerDay) {
       return new ChatSDKError('rate_limit:chat').toResponse();
     }
 
-    const chat = await getChatById({ id });
+    console.log('💬 Getting chat by ID:', id);
+    let chat;
+    try {
+      chat = await getChatById({ id });
+      console.log('✅ Chat retrieved:', { exists: !!chat, userId: chat?.userId });
+    } catch (error) {
+      console.error('❌ Error getting chat:', error);
+      // Continue without existing chat to create new one
+      chat = null;
+    }
 
     if (!chat) {
       const title = await generateTitleFromUserMessage({
