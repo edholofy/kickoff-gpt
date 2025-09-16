@@ -158,7 +158,7 @@ export const sportmonksTools = {
         const teamResult = await sportmonksClient.fetch({
           endpoint: 'teams',
           teamId,
-          include: ['statistics', 'country', 'coach', 'venue']
+          include: ['statistics', 'country', 'venue']
         });
 
         let formData = null;
