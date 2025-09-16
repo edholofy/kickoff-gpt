@@ -201,16 +201,28 @@ export async function POST(request: Request) {
           }
         }
 
+        // Enhanced logging for GPT-5 debugging
+        const isGPT5 = selectedChatModel === 'gpt-5';
+        const gpt5Config = isGPT5 ? {
+          reasoning_effort: 'high',
+          verbosity: 'medium'
+        } : {};
+
+        console.log('🔧 Model configuration:', {
+          selectedModel: selectedChatModel,
+          isGPT5,
+          gpt5Config,
+          modelType: typeof model,
+          hasReasoningEffort: 'reasoning_effort' in gpt5Config
+        });
+
         const result = streamText({
           model,
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
           // GPT-5 specific configuration with high reasoning for superior analysis
-          ...(selectedChatModel === 'gpt-5' && {
-            reasoning_effort: 'high',  // Enable high reasoning for complex football analysis
-            verbosity: 'medium'        // Medium verbosity for detailed insights
-          }),
+          ...gpt5Config,
           experimental_activeTools: [
             // Priority: Football analysis tools first
             'get_today_matches',
@@ -245,13 +257,36 @@ export async function POST(request: Request) {
           },
         });
 
-        result.consumeStream();
+        console.log('📊 StreamText result created:', {
+          hasResult: !!result,
+          resultType: typeof result,
+          hasConsume: typeof result?.consumeStream === 'function',
+          hasToUI: typeof result?.toUIMessageStream === 'function'
+        });
 
-        dataStream.merge(
-          result.toUIMessageStream({
+        try {
+          result.consumeStream();
+          console.log('✅ Stream consumption started successfully');
+        } catch (error) {
+          console.error('❌ Error consuming stream:', error);
+          throw error;
+        }
+
+        try {
+          const uiStream = result.toUIMessageStream({
             sendReasoning: true,
-          }),
-        );
+          });
+          console.log('✅ UI message stream created:', {
+            hasStream: !!uiStream,
+            streamType: typeof uiStream
+          });
+
+          dataStream.merge(uiStream);
+          console.log('✅ Stream merged with dataStream');
+        } catch (error) {
+          console.error('❌ Error creating/merging UI stream:', error);
+          throw error;
+        }
       },
       generateId: generateUUID,
       onFinish: async ({ messages }) => {

@@ -42,7 +42,17 @@ export const myProvider = isTestEnvironment
         'artifact-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
         
         // GPT-5 - Using actual GPT-5 with high reasoning capabilities
-        'gpt-5': useOpenAI ? openai('gpt-5') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : openai('gpt-5')),
+        'gpt-5': (() => {
+          const model = useOpenAI ? openai('gpt-5') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : openai('gpt-5'));
+          console.log('🤖 GPT-5 provider configuration:', {
+            useOpenAI,
+            useGateway,
+            useDirectXAI,
+            modelProvider: useOpenAI ? 'openai' : useGateway ? 'gateway' : 'openai-fallback',
+            modelId: useOpenAI ? 'gpt-5' : 'xai/grok-2-vision-1212'
+          });
+          return model;
+        })(),
         
         // Grok-4 - Using Grok-2 as fallback until Grok-4 is available
         'grok-4': useDirectXAI ? xai('grok-2-vision-1212') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : xai('grok-2-vision-1212')),
