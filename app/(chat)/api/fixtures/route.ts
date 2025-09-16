@@ -10,7 +10,10 @@ export async function GET() {
 
   try {
     const today = new Date().toISOString().split('T')[0];
-    const url = `${SPORTMONKS_BASE_URL}/fixtures/date/${today}?api_token=${SPORTMONKS_API_TOKEN}&include=participants,scores,state,league&per_page=25`;
+    // Use the correct endpoint format with semicolon separator
+    const url = `${SPORTMONKS_BASE_URL}/fixtures/date/${today}?api_token=${SPORTMONKS_API_TOKEN}&include=participants;scores;state;league&per_page=25`;
+
+    console.log('Fetching fixtures from:', url.replace(SPORTMONKS_API_TOKEN, 'HIDDEN'));
 
     const response = await fetch(url, {
       headers: {
@@ -20,6 +23,8 @@ export async function GET() {
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('SportMonks API error response:', errorText);
       throw new Error(`SportMonks API error: ${response.status}`);
     }
 
@@ -54,6 +59,11 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching fixtures:', error);
-    return NextResponse.json({ error: 'Failed to fetch fixtures' }, { status: 500 });
+    // Return empty fixtures instead of error to allow graceful fallback
+    return NextResponse.json({
+      fixtures: [],
+      count: 0,
+      error: 'Unable to fetch fixtures at this time'
+    });
   }
 }

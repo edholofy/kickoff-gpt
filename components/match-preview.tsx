@@ -45,13 +45,17 @@ export function MatchPreview({ chatId, sendMessage }: MatchPreviewProps) {
     const fetchFixtures = async () => {
       try {
         const response = await fetch('/api/fixtures');
-        if (!response.ok) {
-          throw new Error('Failed to fetch fixtures');
-        }
         const data = await response.json();
-        setFixtures(data.fixtures.slice(0, 6)); // Show top 6 matches
+
+        if (data.error) {
+          console.log('Fixtures unavailable:', data.error);
+          setFixtures([]);
+        } else {
+          setFixtures(data.fixtures.slice(0, 6)); // Show top 6 matches
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        console.error('Error loading fixtures:', err);
+        setFixtures([]);
       } finally {
         setLoading(false);
       }
