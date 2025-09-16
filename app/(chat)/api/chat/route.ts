@@ -216,13 +216,21 @@ export async function POST(request: Request) {
           hasReasoningEffort: 'reasoning_effort' in gpt5Config
         });
 
+        console.log('🔧 StreamText configuration:', {
+          selectedModel: selectedChatModel,
+          isGPT5,
+          systemPromptLength: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }).length,
+          messagesCount: convertToModelMessages(uiMessages).length,
+          gpt5Config
+        });
+
         const result = streamText({
           model,
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
           // GPT-5 specific configuration with medium reasoning for balanced performance
-          ...gpt5Config,
+          ...(isGPT5 ? gpt5Config : {}),
           experimental_activeTools: [
             // Priority: Football analysis tools first
             'get_today_matches',
@@ -308,14 +316,30 @@ export async function POST(request: Request) {
 
     const streamContext = getStreamContext();
 
+    console.log('🌊 Setting up response stream:', {
+      hasStreamContext: !!streamContext,
+      streamId,
+      streamType: typeof stream
+    });
+
+    const headers = {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    };
+
     if (streamContext) {
-      return new Response(
-        await streamContext.resumableStream(streamId, () =>
-          stream.pipeThrough(new JsonToSseTransformStream()),
-        ),
+      console.log('🔄 Using resumable stream context');
+      const resumableStream = await streamContext.resumableStream(streamId, () =>
+        stream.pipeThrough(new JsonToSseTransformStream()),
       );
+      console.log('✅ Resumable stream created, returning response');
+      return new Response(resumableStream, { headers });
     } else {
-      return new Response(stream.pipeThrough(new JsonToSseTransformStream()));
+      console.log('🔄 Using direct stream');
+      const directStream = stream.pipeThrough(new JsonToSseTransformStream());
+      console.log('✅ Direct stream created, returning response');
+      return new Response(directStream, { headers });
     }
   } catch (error) {
     if (error instanceof ChatSDKError) {
