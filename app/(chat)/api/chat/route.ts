@@ -39,7 +39,7 @@ import type { ChatMessage } from '@/lib/types';
 import type { ChatModel } from '@/lib/ai/models';
 import type { VisibilityType } from '@/components/visibility-selector';
 
-export const maxDuration = 600; // 10 minutes for GPT-5 reasoning with large datasets
+export const maxDuration = 300; // 5 minutes maximum for Vercel hobby plan
 
 let globalStreamContext: ResumableStreamContext | null = null;
 
@@ -222,7 +222,7 @@ export async function POST(request: Request) {
         // Enhanced logging for GPT-5 debugging
         const isGPT5 = selectedChatModel === 'gpt-5';
         const gpt5Config = isGPT5 ? {
-          reasoning_effort: 'medium',
+          reasoning_effort: 'low', // Use low effort for faster responses within 5-minute Vercel limit
           verbosity: 'medium'
         } : {};
 

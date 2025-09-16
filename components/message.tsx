@@ -338,7 +338,7 @@ export const ThinkingMessage = () => {
               <div className="flex flex-col gap-1">
                 <div className="font-medium">🧠 GPT-5 is reasoning...</div>
                 <div className="text-xs text-muted-foreground/70">
-                  Analyzing football data with advanced reasoning (up to 10 minutes)
+                  Analyzing football data with advanced reasoning (up to 5 minutes)
                 </div>
               </div>
             </div>
