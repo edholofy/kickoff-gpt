@@ -17,7 +17,7 @@ import {
   saveChat,
   saveMessages,
 } from '@/lib/db/queries';
-import { convertToUIMessages, generateUUID, truncateMessages } from '@/lib/utils';
+import { convertToUIMessages, generateUUID, truncateMessages, getTotalContentLength } from '@/lib/utils';
 import { generateTitleFromUserMessage } from '../../actions';
 import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
@@ -133,7 +133,23 @@ export async function POST(request: Request) {
     }
 
     const messagesFromDb = await getMessagesByChatId({ id });
-    const uiMessages = truncateMessages([...convertToUIMessages(messagesFromDb), message]);
+    const allMessages = [...convertToUIMessages(messagesFromDb), message];
+    const uiMessages = truncateMessages(allMessages);
+
+    // Debug logging for context issues
+    const totalContentLength = getTotalContentLength(uiMessages);
+    console.log(`📊 Messages debug:`, {
+      totalFromDb: messagesFromDb.length,
+      totalWithNew: allMessages.length,
+      afterTruncation: uiMessages.length,
+      totalContentLength,
+      contentLengthKB: Math.round(totalContentLength / 1024),
+      messageSizes: uiMessages.map(m => ({
+        role: m.role,
+        partsCount: m.parts?.length || 0,
+        totalLength: JSON.stringify(m.parts).length
+      }))
+    });
 
     const { longitude, latitude, city, country } = geolocation(request);
 

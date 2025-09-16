@@ -115,7 +115,7 @@ export function getTextFromMessage(message: ChatMessage): string {
     .join('');
 }
 
-export function truncateMessages(messages: ChatMessage[], maxMessages = 10): ChatMessage[] {
+export function truncateMessages(messages: ChatMessage[], maxMessages = 5): ChatMessage[] {
   if (messages.length <= maxMessages) {
     return messages;
   }
@@ -128,4 +128,10 @@ export function truncateMessages(messages: ChatMessage[], maxMessages = 10): Cha
   console.log(`🔄 Truncated ${messages.length} messages to ${truncated.length}`);
 
   return truncated;
+}
+
+export function getTotalContentLength(messages: ChatMessage[]): number {
+  return messages.reduce((total, message) => {
+    return total + JSON.stringify(message.parts).length;
+  }, 0);
 }
