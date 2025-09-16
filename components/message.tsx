@@ -313,12 +313,6 @@ export const PreviewMessage = memo(
 
 export const ThinkingMessage = () => {
   const role = 'assistant';
-  const { dataStream } = useDataStream();
-
-  // Find the latest reasoning content from the data stream
-  const latestReasoning = dataStream
-    .filter(part => part.type === 'reasoning')
-    .pop()?.text || '';
 
   return (
     <motion.div
@@ -335,30 +329,19 @@ export const ThinkingMessage = () => {
 
         <div className="flex flex-col gap-4 w-full">
           <MessageContent className="bg-transparent -ml-4">
-            {latestReasoning ? (
-              <div className="text-muted-foreground">
-                <div className="text-xs font-medium mb-2 text-primary flex items-center gap-2">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full"
-                  />
-                  🧠 GPT-5 Reasoning...
-                </div>
-                <div className="text-sm bg-muted/30 p-3 rounded-lg border border-muted max-h-32 overflow-y-auto">
-                  <pre className="whitespace-pre-wrap font-mono text-xs">{latestReasoning}</pre>
+            <div className="text-muted-foreground flex items-center gap-2">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full"
+              />
+              <div className="flex flex-col gap-1">
+                <div className="font-medium">🧠 GPT-5 is reasoning...</div>
+                <div className="text-xs text-muted-foreground/70">
+                  Analyzing football data with advanced reasoning (up to 10 minutes)
                 </div>
               </div>
-            ) : (
-              <div className="text-muted-foreground flex items-center gap-2">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full"
-                />
-                Analyzing football data with GPT-5...
-              </div>
-            )}
+            </div>
           </MessageContent>
         </div>
       </div>
