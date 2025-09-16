@@ -66,7 +66,10 @@ export class SportmonksClient {
         if (config.date) {
           urlPath += `/date/${config.date}`;
         } else if (config.teamId) {
-          urlPath += `/teams/${config.teamId}`;
+          // Use between date range endpoint for team fixtures
+          const today = new Date().toISOString().split('T')[0];
+          const futureDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+          urlPath += `/between/${today}/${futureDate}/${config.teamId}`;
         } else if (config.leagueId) {
           urlPath += `/leagues/${config.leagueId}`;
         }
@@ -152,7 +155,7 @@ export class SportmonksClient {
     });
   }
 
-  async getTeamForm(teamId: number, limit: number = 10) {
+  async getTeamForm(teamId: number, limit = 10) {
     return this.fetch({
       endpoint: 'fixtures',
       teamId,
