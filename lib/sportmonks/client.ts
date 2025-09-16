@@ -154,7 +154,7 @@ export class SportmonksClient {
     return this.fetch({
       endpoint: 'fixtures',
       date: today,
-      include: ['participants', 'scores', 'state', 'league', 'odds']
+      include: ['participants', 'scores', 'state', 'league']
     });
   }
 
