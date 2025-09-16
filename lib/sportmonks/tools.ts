@@ -31,7 +31,7 @@ export const sportmonksTools = {
           teamId,
           leagueId,
           limit: 20, // Limit to prevent massive responses
-          include: ['participants', 'scores', 'state', 'league', 'odds']
+          include: ['participants', 'scores', 'state', 'league']
         });
         return {
           success: true,
