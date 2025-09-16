@@ -1,15 +1,15 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Chat SDK</h1>
-</a>
+<div align="center">
+  <img alt="Kickoff GPT - AI-powered football betting assistant" src="app/(chat)/opengraph-image.png">
+  <h1 align="center">⚽ Kickoff GPT</h1>
+</div>
 
 <p align="center">
-    Chat SDK is a free, open-source template built with Next.js and the AI SDK that helps you quickly build powerful chatbot applications.
+    Kickoff GPT is an AI-powered football betting assistant built with Next.js and the AI SDK, providing professional betting insights and analysis.
 </p>
 
 <p align="center">
-  <a href="https://chat-sdk.dev"><strong>Read Docs</strong></a> ·
   <a href="#features"><strong>Features</strong></a> ·
+  <a href="#football-betting-ai"><strong>Football Betting AI</strong></a> ·
   <a href="#model-providers"><strong>Model Providers</strong></a> ·
   <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
   <a href="#running-locally"><strong>Running locally</strong></a>
@@ -24,47 +24,70 @@
 - [AI SDK](https://sdk.vercel.ai/docs)
   - Unified API for generating text, structured objects, and tool calls with LLMs
   - Hooks for building dynamic chat and generative user interfaces
-  - Supports xAI (default), OpenAI, Fireworks, and other model providers
+  - Supports xAI (default), OpenAI, and other model providers
+- [SportMonks API](https://www.sportmonks.com) Integration
+  - Real-time football data, fixtures, and live scores
+  - Comprehensive team statistics and head-to-head records
+  - Professional betting odds and predictions
 - [shadcn/ui](https://ui.shadcn.com)
   - Styling with [Tailwind CSS](https://tailwindcss.com)
   - Component primitives from [Radix UI](https://radix-ui.com) for accessibility and flexibility
 - Data Persistence
-  - [Neon Serverless Postgres](https://vercel.com/marketplace/neon) for saving chat history and user data
-  - [Vercel Blob](https://vercel.com/storage/blob) for efficient file storage
+  - PostgreSQL for saving chat history and user data
+  - Blob storage for efficient file storage
 - [Auth.js](https://authjs.dev)
   - Simple and secure authentication
 
+## Football Betting AI
+
+Kickoff GPT specializes in football betting analysis with:
+- **Professional Analysis**: Comprehensive betting insights across multiple markets
+- **Real-time Data**: Live scores, fixtures, and up-to-date odds
+- **Risk Assessment**: Built-in responsible gambling guidelines
+- **Multiple Markets**: Coverage of 1X2, Over/Under, BTTS, and more
+- **Team Intelligence**: Deep team statistics, form analysis, and H2H records
+
 ## Model Providers
 
-This template uses the [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) to access multiple AI models through a unified interface. The default configuration includes [xAI](https://x.ai) models (`grok-2-vision-1212`, `grok-3-mini-beta`) routed through the gateway.
+Kickoff GPT uses multiple AI providers for optimal football analysis:
 
-### AI Gateway Authentication
+- **Primary Models**: xAI Grok models for advanced sports reasoning
+- **Fallback**: OpenAI GPT models for additional capabilities
+- **Custom Prompts**: Specialized football betting analysis prompts
 
-**For Vercel deployments**: Authentication is handled automatically via OIDC tokens.
+### AI Provider Configuration
 
-**For non-Vercel deployments**: You need to provide an AI Gateway API key by setting the `AI_GATEWAY_API_KEY` environment variable in your `.env.local` file.
+The application supports multiple AI providers configured via environment variables:
+- Set `XAI_API_KEY` for Grok models
+- Set `OPENAI_API_KEY` for GPT models
+- Configure `AI_GATEWAY_API_KEY` for non-Vercel deployments
 
-With the [AI SDK](https://ai-sdk.dev/docs/introduction), you can also switch to direct LLM providers like [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://ai-sdk.dev/providers/ai-sdk-providers) with just a few lines of code.
+With the [AI SDK](https://ai-sdk.dev/docs/introduction), you can easily switch between providers or add new ones.
 
 ## Deploy Your Own
 
-You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
+Deploy your own Kickoff GPT instance:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot&env=AUTH_SECRET&envDescription=Learn+more+about+how+to+get+the+API+Keys+for+the+application&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot%2Fblob%2Fmain%2F.env.example&demo-title=AI+Chatbot&demo-description=An+Open-Source+AI+Chatbot+Template+Built+With+Next.js+and+the+AI+SDK+by+Vercel.&demo-url=https%3A%2F%2Fchat.vercel.ai&products=%5B%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22ai%22%2C%22productSlug%22%3A%22grok%22%2C%22integrationSlug%22%3A%22xai%22%7D%2C%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22productSlug%22%3A%22neon%22%2C%22integrationSlug%22%3A%22neon%22%7D%2C%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22productSlug%22%3A%22upstash-kv%22%2C%22integrationSlug%22%3A%22upstash%22%7D%2C%7B%22type%22%3A%22blob%22%7D%5D)
+### Prerequisites
+1. **SportMonks API**: Sign up at [sportmonks.com](https://www.sportmonks.com/) for football data
+2. **Database**: PostgreSQL instance (Vercel Postgres, Neon, or others)
+3. **Storage**: Blob storage for file handling
+4. **AI APIs**: xAI and/or OpenAI API keys
+
+### Quick Deploy
+The easiest way is to deploy on Vercel with automatic environment variable setup.
 
 ## Running locally
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+You will need to use the environment variables [defined in `.env.example`](.env.example) to run Kickoff GPT. Copy the example file and fill in your API keys:
 
 > Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various AI and authentication provider accounts.
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
-
 ```bash
+cp .env.example .env.local
+# Edit .env.local with your API keys
 pnpm install
 pnpm dev
 ```
 
-Your app template should now be running on [localhost:3000](http://localhost:3000).
+Your Kickoff GPT instance should now be running on [localhost:3000](http://localhost:3000).

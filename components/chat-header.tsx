@@ -6,7 +6,7 @@ import { useWindowSize } from 'usehooks-ts';
 
 import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, VercelIcon } from './icons';
+import { PlusIcon, KickoffIcon } from './icons';
 import { useSidebar } from './ui/sidebar';
 import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
@@ -61,21 +61,11 @@ function PureChatHeader({
       )}
 
       <div className="flex items-center gap-2 order-3 md:ml-auto">
-        <span className="hidden md:flex text-sm font-medium text-zinc-600 dark:text-zinc-400">
-          ⚽ Football Betting AI
+        <span className="flex text-sm font-medium text-zinc-600 dark:text-zinc-400 items-center gap-1">
+          <KickoffIcon size={14} />
+          <span className="hidden sm:inline">Kickoff GPT</span>
+          <span className="hidden md:inline">- Football Betting AI</span>
         </span>
-        <Button
-          className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-1.5 px-2 h-fit md:h-[34px]"
-          asChild
-        >
-          <Link
-            href={`https://vercel.com/new/clone?repository-url=https://github.com/vercel/ai-chatbot&env=AUTH_SECRET,SPORTMONKS_API_TOKEN&envDescription=Learn more about how to get the API Keys for the application&envLink=https://github.com/vercel/ai-chatbot/blob/main/.env.example&demo-title=Football Betting AI&demo-description=AI-Powered Football Betting Analysis with Real-Time SportMonks Data&demo-url=https://chat.vercel.ai&products=[{"type":"integration","protocol":"ai","productSlug":"grok","integrationSlug":"xai"},{"type":"integration","protocol":"storage","productSlug":"neon","integrationSlug":"neon"},{"type":"integration","protocol":"storage","productSlug":"upstash-kv","integrationSlug":"upstash"},{"type":"blob"}]`}
-            target="_noblank"
-          >
-            <VercelIcon size={16} />
-            Deploy with Vercel
-          </Link>
-        </Button>
       </div>
     </header>
   );

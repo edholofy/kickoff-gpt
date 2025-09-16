@@ -56,6 +56,26 @@ export const AttachmentIcon = () => {
   );
 };
 
+export const KickoffIcon = ({ size = 17 }) => {
+  return (
+    <svg
+      height={size}
+      strokeLinejoin="round"
+      viewBox="0 0 24 24"
+      width={size}
+      style={{ color: 'currentcolor' }}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8 12h8M12 8v8" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+};
+
+// Keep VercelIcon for technical integrations
 export const VercelIcon = ({ size = 17 }) => {
   return (
     <svg

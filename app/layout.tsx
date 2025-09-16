@@ -7,9 +7,9 @@ import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
+  metadataBase: new URL('https://kickoff-gpt.vercel.app'),
+  title: 'Kickoff GPT - AI Football Betting Assistant',
+  description: 'AI-powered football betting analysis with real-time SportMonks data, professional insights, and responsible gambling tools.',
 };
 
 export const viewport = {
