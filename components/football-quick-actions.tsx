@@ -6,11 +6,11 @@ import type { UseChatHelpers } from '@ai-sdk/react';
 import type { VisibilityType } from './visibility-selector';
 import type { ChatMessage } from '@/lib/types';
 import { Button } from './ui/button';
-import { 
-  Trophy, 
-  TrendingUp, 
-  Activity, 
-  Users, 
+import {
+  Trophy,
+  TrendingUp,
+  Clock,
+  Users,
   Calendar,
   Target,
   Zap,
@@ -30,51 +30,51 @@ function PureFootballQuickActions({
 }: FootballQuickActionsProps) {
   const quickActions = [
     {
-      icon: Activity,
-      label: "Live Matches",
-      prompt: "Show me all live football matches with current scores and in-play betting opportunities",
-      color: "text-red-500"
+      icon: Clock,
+      label: "Upcoming Matches",
+      prompt: "Show me today's and tomorrow's football fixtures with pre-match analysis and betting opportunities",
+      color: "text-blue-500"
     },
     {
       icon: Calendar,
       label: "Today's Fixtures",
-      prompt: "Analyze today's football matches and provide betting recommendations for the best opportunities",
-      color: "text-blue-500"
+      prompt: "Give me all today's football matches with detailed pre-match analysis and betting recommendations",
+      color: "text-green-500"
     },
     {
       icon: Trophy,
       label: "Premier League",
-      prompt: "Give me the current Premier League standings and analyze the top teams' upcoming fixtures",
+      prompt: "Get Premier League standings and analyze upcoming fixtures with betting insights",
       color: "text-purple-500"
     },
     {
       icon: TrendingUp,
       label: "Value Bets",
-      prompt: "Find today's best value bets across all major football leagues with detailed analysis",
-      color: "text-green-500"
+      prompt: "Find the best value betting opportunities in today's and this week's football matches",
+      color: "text-emerald-500"
     },
     {
       icon: Users,
       label: "Team Comparison",
-      prompt: "I want to compare two teams - please ask me which teams and then provide detailed H2H analysis",
+      prompt: "I want to compare two teams - ask me which teams and provide detailed head-to-head analysis and betting insights",
       color: "text-orange-500"
     },
     {
       icon: Target,
       label: "Weekend Fixtures",
-      prompt: "Show me this weekend's major football fixtures with betting recommendations",
+      prompt: "Show me this weekend's key football matches with comprehensive pre-match analysis",
       color: "text-indigo-500"
     },
     {
       icon: Zap,
       label: "Underdog Picks",
-      prompt: "Identify potential underdog wins for today's matches with good odds value",
+      prompt: "Identify potential underdog opportunities in upcoming matches with strong value",
       color: "text-yellow-500"
     },
     {
       icon: BarChart3,
       label: "Form Analysis",
-      prompt: "Analyze the form of teams playing today and suggest bets based on recent performance",
+      prompt: "Analyze team form and recent performance for today's matches with betting recommendations",
       color: "text-cyan-500"
     }
   ];

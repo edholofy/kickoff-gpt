@@ -19,10 +19,10 @@ function PureSuggestedActions({
   selectedVisibilityType,
 }: SuggestedActionsProps) {
   const suggestedActions = [
-    'Analyze today\'s football matches and provide betting recommendations',
-    'Show me live football scores and in-play betting opportunities',
-    'Get Premier League standings and upcoming fixtures',
-    'Find the best value bets for this weekend\'s matches',
+    'Show me today\'s upcoming football matches with pre-match analysis',
+    'Analyze today\'s best betting opportunities and value picks',
+    'Get Premier League standings and analyze upcoming fixtures',
+    'Find underdog opportunities in this weekend\'s matches',
   ];
 
   return (
