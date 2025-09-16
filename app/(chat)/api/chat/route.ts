@@ -184,6 +184,11 @@ export async function POST(request: Request) {
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
+          // GPT-5 specific configuration for optimal performance
+          ...(selectedChatModel === 'gpt-5' && {
+            reasoning_effort: 'high',
+            verbosity: 'medium'
+          }),
           experimental_activeTools: [
             'getWeather',
             'createDocument',

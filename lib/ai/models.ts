@@ -10,7 +10,7 @@ export const chatModels: Array<ChatModel> = [
   {
     id: 'gpt-5',
     name: 'GPT-5 🔥',
-    description: 'GPT-4o with superior sports analytics and betting insights (GPT-5 coming soon)',
+    description: 'OpenAI GPT-5 with advanced reasoning for superior sports analytics and insights',
   },
   {
     id: 'grok-4',
