@@ -195,7 +195,6 @@ export async function POST(request: Request) {
             'get_standings',
             'get_head_to_head',
             'get_team_stats',
-            'get_match_predictions',
             'get_match_odds',
             'search_team',
             'get_league_info',

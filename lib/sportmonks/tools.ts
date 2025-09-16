@@ -30,7 +30,7 @@ export const sportmonksTools = {
           date,
           teamId,
           leagueId,
-          include: ['participants', 'scores', 'state', 'league', 'odds', 'predictions']
+          include: ['participants', 'scores', 'state', 'league', 'odds']
         });
         return {
           success: true,
@@ -241,7 +241,7 @@ export const sportmonksTools = {
         // This is a simplified version - you may need to adjust based on API capabilities
         const sportmonksClient = getSportmonksClient();
         const result = await sportmonksClient.fetch({
-          endpoint: 'teams/search/' + encodeURIComponent(teamName),
+          endpoint: `teams/search/${encodeURIComponent(teamName)}`,
           include: ['country', 'venue']
         });
         return {
