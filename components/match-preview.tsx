@@ -84,7 +84,7 @@ export function MatchPreview({ chatId, sendMessage }: MatchPreviewProps) {
       <div className="mb-4 px-4 w-full max-w-3xl mx-auto">
         <p className="text-sm text-muted-foreground mb-3 flex items-center gap-2">
           <Clock size={16} />
-          Today's Matches
+          Today&apos;s Matches
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -105,11 +105,11 @@ export function MatchPreview({ chatId, sendMessage }: MatchPreviewProps) {
       <div className="mb-4 px-4 w-full max-w-3xl mx-auto">
         <p className="text-sm text-muted-foreground mb-3 flex items-center gap-2">
           <Clock size={16} />
-          Today's Matches
+          Today&apos;s Matches
         </p>
         <Card className="border-destructive/20">
           <CardContent className="p-4 text-center text-sm text-muted-foreground">
-            Unable to load today's matches. Please try the quick actions below.
+            Unable to load today&apos;s matches. Please try the quick actions below.
           </CardContent>
         </Card>
       </div>
@@ -121,7 +121,7 @@ export function MatchPreview({ chatId, sendMessage }: MatchPreviewProps) {
       <div className="mb-4 px-4 w-full max-w-3xl mx-auto">
         <p className="text-sm text-muted-foreground mb-3 flex items-center gap-2">
           <Clock size={16} />
-          Today's Matches
+          Today&apos;s Matches
         </p>
         <Card>
           <CardContent className="p-4 text-center text-sm text-muted-foreground">
@@ -136,7 +136,7 @@ export function MatchPreview({ chatId, sendMessage }: MatchPreviewProps) {
     <div className="mb-6 px-4 w-full max-w-3xl mx-auto">
       <p className="text-sm text-muted-foreground mb-3 flex items-center gap-2">
         <Clock size={16} />
-        Today's Matches - Click to Analyze
+        Today&apos;s Matches - Click to Analyze
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
         {fixtures.map((fixture, index) => (
