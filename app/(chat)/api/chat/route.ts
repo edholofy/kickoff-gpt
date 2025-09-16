@@ -204,7 +204,7 @@ export async function POST(request: Request) {
         // Enhanced logging for GPT-5 debugging
         const isGPT5 = selectedChatModel === 'gpt-5';
         const gpt5Config = isGPT5 ? {
-          reasoning_effort: 'high',
+          reasoning_effort: 'medium',
           verbosity: 'medium'
         } : {};
 
@@ -221,7 +221,7 @@ export async function POST(request: Request) {
           system: systemPrompt({ selectedChatModel, requestHints, mode: 'football' }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
-          // GPT-5 specific configuration with high reasoning for superior analysis
+          // GPT-5 specific configuration with medium reasoning for balanced performance
           ...gpt5Config,
           experimental_activeTools: [
             // Priority: Football analysis tools first
