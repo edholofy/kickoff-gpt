@@ -114,3 +114,13 @@ export function getTextFromMessage(message: ChatMessage): string {
     .map((part) => part.text)
     .join('');
 }
+
+export function truncateMessages(messages: ChatMessage[], maxMessages = 20): ChatMessage[] {
+  if (messages.length <= maxMessages) {
+    return messages;
+  }
+
+  // Keep the most recent messages to stay within context limits
+  // This preserves the conversation flow while preventing context overflow
+  return messages.slice(-maxMessages);
+}

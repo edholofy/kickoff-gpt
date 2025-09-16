@@ -17,7 +17,7 @@ import {
   saveChat,
   saveMessages,
 } from '@/lib/db/queries';
-import { convertToUIMessages, generateUUID } from '@/lib/utils';
+import { convertToUIMessages, generateUUID, truncateMessages } from '@/lib/utils';
 import { generateTitleFromUserMessage } from '../../actions';
 import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
     }
 
     const messagesFromDb = await getMessagesByChatId({ id });
-    const uiMessages = [...convertToUIMessages(messagesFromDb), message];
+    const uiMessages = truncateMessages([...convertToUIMessages(messagesFromDb), message]);
 
     const { longitude, latitude, city, country } = geolocation(request);
 
@@ -162,7 +162,7 @@ export async function POST(request: Request) {
 
     const stream = createUIMessageStream({
       execute: ({ writer: dataStream }) => {
-        let model;
+        let model: ReturnType<typeof myProvider.languageModel>;
         console.log('🤖 Loading model:', selectedChatModel);
         try {
           model = myProvider.languageModel(selectedChatModel);
