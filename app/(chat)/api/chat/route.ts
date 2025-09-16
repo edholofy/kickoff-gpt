@@ -136,6 +136,15 @@ export async function POST(request: Request) {
     const allMessages = [...convertToUIMessages(messagesFromDb), message];
     const uiMessages = truncateMessages(allMessages);
 
+    const { longitude, latitude, city, country } = geolocation(request);
+
+    const requestHints: RequestHints = {
+      longitude,
+      latitude,
+      city,
+      country,
+    };
+
     // Debug logging for context issues
     const totalContentLength = getTotalContentLength(uiMessages);
     const systemPromptText = systemPrompt({ selectedChatModel, requestHints, mode: 'football' });
@@ -156,15 +165,6 @@ export async function POST(request: Request) {
         totalLength: JSON.stringify(m.parts).length
       }))
     });
-
-    const { longitude, latitude, city, country } = geolocation(request);
-
-    const requestHints: RequestHints = {
-      longitude,
-      latitude,
-      city,
-      country,
-    };
 
     await saveMessages({
       messages: [
