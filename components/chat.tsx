@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { ChatHeader } from '@/components/chat-header';
 import type { Vote } from '@/lib/db/schema';
-import { fetcher, fetchWithErrorHandlers, generateUUID, cn } from '@/lib/utils';
+import { fetcher, fetchWithErrorHandlers, generateUUID, } from '@/lib/utils';
 import { Artifact } from './artifact';
 import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
@@ -23,6 +23,7 @@ import { ChatSDKError } from '@/lib/errors';
 import type { Attachment, ChatMessage } from '@/lib/types';
 import { useDataStream } from './data-stream-provider';
 import { FootballQuickActions } from './football-quick-actions';
+import { MatchPreview } from './match-preview';
 
 export function Chat({
   id,
@@ -149,11 +150,17 @@ export function Chat({
         />
 
         {messages.length === 0 && !isReadonly && (
-          <FootballQuickActions
-            chatId={id}
-            sendMessage={sendMessage}
-            selectedVisibilityType={visibilityType}
-          />
+          <>
+            <MatchPreview
+              chatId={id}
+              sendMessage={sendMessage}
+            />
+            <FootballQuickActions
+              chatId={id}
+              sendMessage={sendMessage}
+              selectedVisibilityType={visibilityType}
+            />
+          </>
         )}
 
         <div className="sticky bottom-0 flex gap-2 px-4 pb-4 mx-auto w-full bg-background md:pb-6 md:max-w-3xl z-[1] border-t-0">
