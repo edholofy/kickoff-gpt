@@ -212,19 +212,21 @@ export async function POST(request: Request) {
             verbosity: 'medium'        // Medium verbosity for detailed insights
           }),
           experimental_activeTools: [
-            'getWeather',
+            // Priority: Football analysis tools first
+            'get_today_matches',
+            'get_fixtures',
+            'get_live_matches',
+            'get_team_stats',
+            'get_head_to_head',
+            'get_standings',
+            'get_match_odds',
+            'get_match_predictions',
+            'search_team',
+            'get_league_info',
+            // Secondary tools
             'createDocument',
             'updateDocument',
             'requestSuggestions',
-            'get_fixtures',
-            'get_today_matches',
-            'get_live_matches',
-            'get_standings',
-            'get_head_to_head',
-            'get_team_stats',
-            'get_match_odds',
-            'search_team',
-            'get_league_info',
           ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
