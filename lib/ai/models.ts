@@ -1,4 +1,4 @@
-export const DEFAULT_CHAT_MODEL: string = 'gpt-5';
+export const DEFAULT_CHAT_MODEL: string = 'gpt-4o';
 
 export interface ChatModel {
   id: string;
@@ -7,6 +7,11 @@ export interface ChatModel {
 }
 
 export const chatModels: Array<ChatModel> = [
+  {
+    id: 'gpt-4o',
+    name: 'GPT-4o ⚡',
+    description: 'OpenAI GPT-4o - Fast, reliable, and excellent for sports analysis',
+  },
   {
     id: 'gpt-5',
     name: 'GPT-5 🔥',

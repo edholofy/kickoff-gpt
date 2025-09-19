@@ -210,8 +210,8 @@ export async function POST(request: Request) {
         } catch (error) {
           console.error('❌ Model loading failed:', selectedChatModel, error);
           try {
-            console.log('🔄 Trying fallback to gpt-5...');
-            model = myProvider.languageModel('gpt-5');
+            console.log('🔄 Trying fallback to chat-model (GPT-4o)...');
+            model = myProvider.languageModel('chat-model');
             console.log('✅ Fallback model loaded');
           } catch (fallbackError) {
             console.error('❌ Fallback model also failed:', fallbackError);

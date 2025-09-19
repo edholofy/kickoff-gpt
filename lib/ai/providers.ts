@@ -26,20 +26,21 @@ export const myProvider = isTestEnvironment
         'chat-model-reasoning': reasoningModel,
         'title-model': titleModel,
         'artifact-model': artifactModel,
+        'gpt-4o': chatModel,
         'gpt-5': chatModel,
         'grok-4': chatModel,
       },
     })
   : customProvider({
       languageModels: {
-        // Default models for backward compatibility
-        'chat-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-vision-1212')),
+        // Default models for backward compatibility - switched to GPT-4o for reliability
+        'chat-model': useOpenAI ? openai('gpt-4o') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-vision-1212')),
         'chat-model-reasoning': wrapLanguageModel({
           model: useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-beta')),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
-        'artifact-model': useOpenAI ? openai('gpt-5') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
+        'title-model': useOpenAI ? openai('gpt-4o') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
+        'artifact-model': useOpenAI ? openai('gpt-4o') : (useDirectXAI ? xai('grok-4') : gateway.languageModel('xai/grok-2-1212')),
         
         // GPT-5 - Using actual GPT-5 with high reasoning capabilities
         'gpt-5': (() => {
@@ -54,6 +55,9 @@ export const myProvider = isTestEnvironment
           return model;
         })(),
         
+        // GPT-4o - Fast and reliable model for general use
+        'gpt-4o': useOpenAI ? openai('gpt-4o') : (useGateway ? gateway.languageModel('openai/gpt-4o') : openai('gpt-4o')),
+
         // Grok-4 - Using Grok-2 as fallback until Grok-4 is available
         'grok-4': useDirectXAI ? xai('grok-2-vision-1212') : (useGateway ? gateway.languageModel('xai/grok-2-vision-1212') : xai('grok-2-vision-1212')),
       },
